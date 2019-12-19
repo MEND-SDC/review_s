@@ -8,6 +8,8 @@ import Stats from './Stats.jsx';
 import Reviews from './Reviews.jsx';
 import Search from './Search.jsx';
 
+const host = 'localhost:3000';
+
 const StyledButton = styled.button`
   border-radius: 50%;
   color: #008489;
@@ -49,11 +51,11 @@ class App extends React.Component {
     const endpoint = window.location.pathname;
     let url = '';
     if (endpoint.length === 1) {
-      url = 'http://3.137.3.212/api/listing/1';
+      url = `http://${host}/api/listing/1`;
     } else {
       const arr = endpoint.split('/');
       const id = arr[arr.length - 2];
-      url = `http://3.137.3.212/api/listing/${id}`;
+      url = `http://${host}/api/listing/${id}`;
     }
     axios.get(url)
       .then((results) => {
