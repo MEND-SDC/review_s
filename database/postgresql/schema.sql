@@ -10,11 +10,10 @@ CREATE TABLE user_info(
     gender character,
     date_of_birth date,
     email_address date NOT NULL,
-    phone_number integer NOT NULL,
+    phone_number character NOT NULL,
     emergency_contact integer,
     join_date date NOT NULL,
     image_url character,
-    host boolean NOT NULL,
     user_address character,
 );
 
