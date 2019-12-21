@@ -14,7 +14,8 @@ CREATE TABLE user_info(
     emergency_contact integer,
     join_date date NOT NULL,
     image_url character,
-    user_address character,
+    host boolean NOT NUll,
+    user_address character
 );
 
 CREATE TABLE reviews(
@@ -43,11 +44,11 @@ CREATE TABLE locations(
 
 CREATE TABLE rating(
     rating_id SERIAL PRIMARY KEY,
-    rating_avg real NOT NULL,
-    checking_avg real NOT NULL,
-    accuracy_avg real NOT NULL,
-    value_avg real NOT NULL,
-    communication_avg real NOT NULL,
-    location_avg real NOT NULL,
-    cleanliness_avg real NOT NULL,
-)
+    rating_avg real,
+    checking_avg real,
+    accuracy_avg real,
+    value_avg real,
+    communication_avg real,
+    location_avg real,
+    cleanliness_avg real,
+);
