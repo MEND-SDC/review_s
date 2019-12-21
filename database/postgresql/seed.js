@@ -3,15 +3,29 @@ const faker = require('faker');
 
 const userCount = 20;
 
-const reviews = () => {
+const randomRating = () => {
+  let min = 2.5;
+  let max = 5;
+  return Number.parseFloat(Math.random() * (max - min) + min).toPrecision(3);
+};
 
+const reviews = () => {
+  const postDate = faker.date.recent();
+  const hostResponseDate = null;
+  const hostResponse = null;
+  const checkInRating = randomRating();
+  const accuracyRating = randomRating();
+  const valueRating = randomRating();
+  const communicationRating = randomRating();
+  const locationRating = randomRating();
+  const cleanRating = randomRating();
+  // Insert into reviews with user_id & location_id
 };
 
 const location = (userID) => {
   const title = faker.lorem.words();
   const address = faker.fake('{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}');
-  const rating_id = rating();
-  // 
+  //Insert into location with user_id & loc_id & rating
 };
 
 const userInfo = () => {
@@ -27,15 +41,8 @@ const userInfo = () => {
     const host = false;
     // At this moment want to seed database userInfo into DB and return USER ID
     // If i is equal to 5? want to create an host loaction
-    if (i % 4 === 0) {
-      // User Rating
-      reviews(userID);
-    }
-    if (i % 7 === 0) {
-      // Location
-      location(userID);
-      // Update user to be a host:TRUE
-    }
   }
 };
 
+
+reviews();
