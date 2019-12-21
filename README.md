@@ -45,3 +45,6 @@
     ```
   * U - PUT 'api/reviews/:user_id/:reviews_id'
   * D - DELETE  'api/reviews/:user_id/:reviews_id'
+
+  # Schema
+  ![Schema](https://hrsf124-fec.s3-us-west-1.amazonaws.com/SDC/schemaSDC.png)
