@@ -17,33 +17,31 @@
     ```
     {
       location:{
-          id: 1,
+          location_id: 1,
           title: 'doloribus accusamus nihil',
-          avg_rating: 4.89,
-          communication: 4.6,
-          check_in: 4.1,
-          accuracy: 4.6,
-          value: 3.8,
-          cleanliness: 4.7,
-          hospitality: 23,
-          stylish: 44,
-          location: 4,
-          sparkling_clean: 38,
-          quick_responses: 48,
-          amazing_amenities: 44,
-          counts: 376,
-          owners_id: 1 },
+          address: '1967 loafsugar mtn way'
+           },
         reviews: [{
           {
             name: 'Devon',
             image:'https://s3.amazonaws.com/uifaces/faces/twitter/xamorep/128.jpg',
             date: '2019-10-18 15:29:49.740',
             review:'Qui ad voluptatum dolorem quasi voluptatum molestiae est. Voluptatem tempore dolorem consequatur unde eaque aliquid ratione consequatur. Amet reprehenderit velit.',
+            user_id: 1,
             owners_id: 1,
             owners_response: null,
             owners_response_date: null}, 
-        }]
+        }],
+        rating: {
+          rating_avg: '4.5',
+          checkin_avg: '4.5',
+          accuarcy_avg: '4.5',
+          value_avg: '4.5',
+          communcation_avg: '4.5',
+          loaction_avg: '4.5',
+          cleaniness_avg: '4.5',
+        }
     }
     ```
-  * U - PUT 'api/reviews/:user_id'
-  * D - DELETE  'api/reviews/:user_id'
+  * U - PUT 'api/reviews/:user_id/:reviews_id'
+  * D - DELETE  'api/reviews/:user_id/:reviews_id'
