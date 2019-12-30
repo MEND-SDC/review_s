@@ -1,5 +1,5 @@
 const faker = require('faker');
-//const Model = require('./index.js');
+//const Model = require('./model.js');
 
 const userCount = 20;
 
