@@ -14,7 +14,7 @@ CREATE TABLE users(
     join_date date NOT NULL,
     image_url  VARCHAR(100),
     city VARCHAR(30) NOT NULL,
-    region VARCHAR(30),
+    state VARCHAR(30),
     review_count INTEGER DEFAULT 0,
 );
 

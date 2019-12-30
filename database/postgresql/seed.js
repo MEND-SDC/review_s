@@ -1,9 +1,8 @@
 const {Pool} = require('pg');
 const faker = require('faker');
 const fs = require('fs').promises;
+const path = require('path');
 
-
-const userCount = 5;
 const pool = new Pool({ database: 'reviews' });
 
 pool.on('error', (err) => {
@@ -13,60 +12,93 @@ pool.on('error', (err) => {
 });
 
 const randomRating = () => {
-  let min = 2.5;
+  let min = 2.98;
   let max = 5;
   return Number.parseFloat(Math.random() * (max - min) + min).toPrecision(3);
 };
 
-const reviews = () => {
-  const postDate = faker.date.recent();
-  const hostResponseDate = null;
-  const hostResponse = null;
-  const checkInRating = randomRating();
-  const accuracyRating = randomRating();
-  const valueRating = randomRating();
-  const communicationRating = randomRating();
-  const locationRating = randomRating();
-  const cleanRating = randomRating();
-  // Insert into reviews with user_id & location_id
-};
-
-const location = (userID) => {
-  const title = faker.lorem.words();
-  const address = faker.fake('{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}');
-  //Insert into location with user_id & loc_id & rating
-};
-
-const userInfo = async () => {
-  for (let i = 0; i < userCount; i++) {
-    const obj = {
-      legal_name: faker.fake('{{name.firstName}}, {{name.lastName}}'),
-      gender: undefined,
-      date_of_birth: faker.date.past(),
-      email_address: faker.internet.email(),
-      phone_number: faker.phone.phoneNumber(),
-      emergency_contact: undefined,
-      join_date: faker.date.recent(),
-      image_url: faker.image.avatar(),
-      user_address: faker.fake('{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}'),
-      host: false,
-    };
-
-    console.log(obj);
-    // At this moment want to seed database userInfo into DB and return USER ID
-    // If i is equal to 5? want to create an host loaction
+const rating = (count) => {
+  var rates = '';
+  for (let i = 0; i < count; i++) {
+    rates += `${randomRating()},`;
+    rates += `${randomRating()},`;
+    rates += `${randomRating()},`;
+    rates += `${randomRating()},`;
+    rates += `${randomRating()},`;
+    rates += `${randomRating()},`;
+    rates += `${randomRating()}`;
+    rates += '\n';
   }
+  return rates;
+};
+
+const reviews = (count) => {
+  var review = '';
+  for (let i = 0; i < count; i++) {
+    review += `${faker.date.recent()},`; // date
+    review += `${faker.lorem.sentences()}`; // review
+    review += '\n';
+  }
+  return review;
+};
+
+const locations = (count) => {
+  var location = '';
+  for (let i = 0; i <= count; i++) {
+    location += `${faker.lorem.words()},`; // title
+    location += `${faker.fake('{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}')}`; // address
+    location += '\n';
+  }
+  return location;
+};
+
+const userInfo = (count) => {
+  var user = '';
+  for (let i = 0; i <= count; i++) {
+    user += `${faker.name.firstName()},`; // first_name
+    user += `${faker.name.lastName()},`; // last_name
+    user += `${faker.internet.email()},`; // email
+    user += `${faker.date.recent()},`; // join_date
+    user += `${faker.image.avatar()},`; // image_url
+    user += `${faker.address.city()},`; // city
+    user += `${faker.address.state()},`; // state
+    user += '\n';
+  }
+  return user;
 };
 
 const csvCreateTable = (creatTableInfo, recordNum, tableName) => {
-
+  fs.writeFile(path.resolve(`${tableName}.csv`), creatTableInfo(recordNum)).then(() => {
+    console.log(`Success: ${tableName}.csv`);
+  }).catch((err) => {
+    console.log(`Error: ${err}`);
+  });
 };
 
 const seedPostgres = async () => {
   const promises = [];
+  await csvCreateTable(userInfo, 10, 'users');
 
 
-  console.log(start)
 };
 
-seedPostgres();
+
+console.log(rating(1));
+
+
+// const createUsersString = function (recordCount) {
+//   let users = '';
+//   for (let i = 1; i <= recordCount; i++) {
+//     users += `${faker.name.firstName()},`;
+//     users += `${faker.name.lastName()},`;
+//     users += `${faker.internet.email()},`;
+//     users += `${faker.date.recent()},`;
+//     users += `${Math.floor(Math.random() * 10000)},`;
+//     users += `${Math.floor(Math.random() * 10000)},`;
+//     users += `${Math.floor(Math.random() * 300)},`;
+//     users += `${faker.random.locale()},`;
+//     users += `${faker.address.city()}`;
+//     users += '\n';
+//   }
+//   return users;
+// };
