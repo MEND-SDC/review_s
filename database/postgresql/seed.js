@@ -1,7 +1,16 @@
+const {Pool} = require('pg');
 const faker = require('faker');
-//const Model = require('./model.js');
+const fs = require('fs').promises;
 
-const userCount = 20;
+
+const userCount = 5;
+const pool = new Pool({ database: 'reviews' });
+
+pool.on('error', (err) => {
+  if (err) {
+    console.log(`Error: idle client: ${err}`);
+  }
+});
 
 const randomRating = () => {
   let min = 2.5;
@@ -28,21 +37,36 @@ const location = (userID) => {
   //Insert into location with user_id & loc_id & rating
 };
 
-const userInfo = () => {
+const userInfo = async () => {
   for (let i = 0; i < userCount; i++) {
-    let userID = undefined;
-    const legalName = faker.fake('{{name.firstName}}, {{name.lastName}}');
-    const DOB = faker.date.past();
-    const emailAdress = faker.internet.email();
-    const phoneNumber = faker.phone.phoneNumber();
-    const joinDate = faker.date.recent();
-    const imageUrl = faker.image.avatar();
-    const userAddress = faker.fake('{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}');
-    const host = false;
+    const obj = {
+      legal_name: faker.fake('{{name.firstName}}, {{name.lastName}}'),
+      gender: undefined,
+      date_of_birth: faker.date.past(),
+      email_address: faker.internet.email(),
+      phone_number: faker.phone.phoneNumber(),
+      emergency_contact: undefined,
+      join_date: faker.date.recent(),
+      image_url: faker.image.avatar(),
+      user_address: faker.fake('{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}'),
+      host: false,
+    };
+
+    console.log(obj);
     // At this moment want to seed database userInfo into DB and return USER ID
     // If i is equal to 5? want to create an host loaction
   }
 };
 
+const csvCreateTable = (creatTableInfo, recordNum, tableName) => {
 
-reviews();
+};
+
+const seedPostgres = async () => {
+  const promises = [];
+
+
+  console.log(start)
+};
+
+seedPostgres();
