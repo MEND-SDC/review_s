@@ -61,7 +61,7 @@ const userInfo = (count) => {
     user += `${faker.date.recent()},`; // join_date
     user += `${faker.image.avatar()},`; // image_url
     user += `${faker.address.city()},`; // city
-    user += `${faker.address.state()},`; // state
+    user += `${faker.address.state()}`; // state
     user += '\n';
   }
   return user;
@@ -82,7 +82,7 @@ const seedPostgres = async () => {
 
   promises.push(
     pool.connect()
-      .then(async (client) => client.query(`COPY users(first_name,last_name,email,join_date,image_url,city,state) FROM '${path.resolve('users.csv')}' DELIMITER ',';`)
+      .then(async (client) => client.query(`COPY users(first_name,last_name,email,join_date,image_url,city,state,review_count) FROM '${path.resolve('users.csv')}' DELIMITER ',';`)
         .then((res) => {
           client.release();
         }).catch((err) => {

@@ -12,11 +12,10 @@ CREATE TABLE users
  first_name VARCHAR(20) NOT NULL,
  last_name VARCHAR(30),
  email VARCHAR(40) NOT NULL,
- join_date date NOT NULL,
+ join_date TEXT NOT NULL,
  image_url  VARCHAR(100),
  city VARCHAR(30) NOT NULL,
- "state" VARCHAR(30),
- review_count INTEGER DEFAULT 0
+ "state" VARCHAR(30)
 );
 
 CREATE TABLE reviews
