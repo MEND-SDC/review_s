@@ -18,14 +18,6 @@ CREATE TABLE users
  "state" VARCHAR(30)
 );
 
-CREATE TABLE reviews
-(
- id SERIAL PRIMARY KEY,
- review_date DATE NOT NULL,
- review_text TEXT NOT NULL,
- users_id INTEGER REFERENCES users(id)
-);
-
 CREATE TABLE rating
 (
  id SERIAL PRIMARY KEY,
@@ -35,15 +27,25 @@ CREATE TABLE rating
  value_avg REAL DEFAULT 0.0,
  communication_avg REAL DEFAULT 0.0,
  location_avg REAL DEFAULT 0.0,
- cleanliness_avg REAL DEFAULT 0.0,
- reviews_id INTEGER REFERENCES reviews(id)
+ cleanliness_avg REAL DEFAULT 0.0
 );
 
 CREATE TABLE locations 
 (
  id SERIAL PRIMARY KEY,
  title VARCHAR(40) NOT NULL,
- loc_address VARCHAR(40) NOT NULL,
- rating_id INTEGER REFERENCES rating(id),
- users_id INTEGER REFERENCES users(id)
+ loc_address VARCHAR(80) NOT NULL,
+ users_id INTEGER REFERENCES users(id),
+ rating_id INTEGER REFERENCES rating(id)
 );
+
+CREATE TABLE reviews
+(
+ id SERIAL PRIMARY KEY,
+ review_date TEXT NOT NULL,
+ review_text TEXT NOT NULL,
+ users_id INTEGER REFERENCES users(id),
+ locations_id INTEGER REFERENCES locations(id)
+);
+
+
