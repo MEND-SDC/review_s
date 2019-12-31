@@ -54,7 +54,7 @@ const locations = (count) => {
 
 const userInfo = (count) => {
   var user = '';
-  for (let i = 0; i <= count; i++) {
+  for (let i = 0; i < count; i++) {
     user += `${faker.name.firstName()},`; // first_name
     user += `${faker.name.lastName()},`; // last_name
     user += `${faker.internet.email()},`; // email
@@ -76,29 +76,26 @@ const csvCreateTable = (creatTableInfo, recordNum, tableName) => {
 };
 
 const seedPostgres = async () => {
+  const start = new Date();
   const promises = [];
   await csvCreateTable(userInfo, 10, 'users');
 
-
+  promises.push(
+    pool.connect()
+      .then(async (client) => client.query(`COPY users(first_name,last_name,email,join_date,image_url,city,state) FROM '${path.resolve('users.csv')}' DELIMITER ',';`)
+        .then((res) => {
+          client.release();
+        }).catch((err) => {
+          client.release();
+          console.log(err.stack);
+        })),
+  );
+  Promise.all(promises).then(() => {
+    console.log(`This query took ${new Date() - start} milliseconds`);
+  }).catch((error) => {
+    console.error('Promise.all error', error.stack);
+  });
 };
 
 
-console.log(rating(1));
-
-
-// const createUsersString = function (recordCount) {
-//   let users = '';
-//   for (let i = 1; i <= recordCount; i++) {
-//     users += `${faker.name.firstName()},`;
-//     users += `${faker.name.lastName()},`;
-//     users += `${faker.internet.email()},`;
-//     users += `${faker.date.recent()},`;
-//     users += `${Math.floor(Math.random() * 10000)},`;
-//     users += `${Math.floor(Math.random() * 10000)},`;
-//     users += `${Math.floor(Math.random() * 300)},`;
-//     users += `${faker.random.locale()},`;
-//     users += `${faker.address.city()}`;
-//     users += '\n';
-//   }
-//   return users;
-// };
+seedPostgres();
