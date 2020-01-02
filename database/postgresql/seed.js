@@ -76,11 +76,19 @@ const userInfo = (count) => {
   return user;
 };
 
-const csvCreateTable = (creatTableInfo, recordNum, tableName) => {
+const csvCreateTable = async (creatTableInfo, tableName) => {
   fs.writeFile(path.resolve(`${tableName}.csv`), creatTableInfo(recordNum)).then(() => {
     console.log(`Success: ${tableName}.csv`);
   }).catch((err) => {
     console.log(`Error: ${err}`);
+  });
+};
+
+const rmTable = async (tableName) => {
+  fs.unlink(path.resolve(`${tableName}.csv`), (err) => {
+    if (err) {
+      console.error('Error: ', err);
+    }
   });
 };
 
@@ -99,15 +107,22 @@ const addQuery = async (tableName, rows) => (
 const seedPostgres = async () => {
   const start = new Date();
   const promises = [];
-  await csvCreateTable(userInfo, recordNum, 'users');
-  await csvCreateTable(rating, recordNumAThird, 'rating');
-  await csvCreateTable(locations, recordNumAThird, 'locations');
-  await csvCreateTable(reviews, recordNum, 'reviews');
+  const tableNames = {users: 'users', rating: 'rating', locations: 'locations', reviews: 'reviews'};
 
-  promises.push(await addQuery('users', 'first_name,last_name,email,join_date,image_url,city,state'));
-  promises.push(await addQuery('rating', 'rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg'));
-  promises.push(await addQuery('locations', 'title,loc_address,users_id,rating_id'));
-  promises.push(await addQuery('reviews', 'review_date,review_text,users_id,locations_id'));
+  await csvCreateTable(userInfo, tableNames.users);
+  await csvCreateTable(rating, tableNames.rating);
+  await csvCreateTable(locations, tableNames.locations);
+  await csvCreateTable(reviews, tableNames.reviews);
+
+  promises.push(await addQuery(tableNames.users, 'first_name,last_name,email,join_date,image_url,city,state'));
+  promises.push(await addQuery(tableNames.rating, 'rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg'));
+  promises.push(await addQuery(tableNames.locations, 'title,loc_address,users_id,rating_id'));
+  promises.push(await addQuery(tableNames.reviews, 'review_date,review_text,users_id,locations_id'));
+  
+  await rmTable(tableNames.users);
+  await rmTable(tableNames.rating);
+  await rmTable(tableNames.locations);
+  await rmTable(tableNames.reviews);
 
   Promise.all(promises).then(() => {
     console.log(`This query took ${new Date() - start} milliseconds`);
