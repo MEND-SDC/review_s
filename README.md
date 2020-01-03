@@ -48,3 +48,7 @@
 
   # Schema
   ![Schema](https://hrsf124-fec.s3-us-west-1.amazonaws.com/SDC/schemaSDC.png)
+
+* Cassandra Seeding Scpirt
+- cd /your/path
+- cqlsh -e "SOURCE 'schema.cql'"

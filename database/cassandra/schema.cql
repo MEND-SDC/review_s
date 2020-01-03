@@ -1,60 +1,53 @@
-CREATE KEYSPACE airreviews WITH replication = 
-  {'class' = 'SimpleStrategy', 'replication_factor': '2'};
+DROP KEYSPACE IF EXISTS reviews;
 
-USE airreviews;
+CREATE KEYSPACE reviews WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : '2'};
 
-DROP TABLE IF EXISTS user_info;
+DROP TABLE IF EXISTS reviews.users;
 
-CREATE TABLE user_info(
-    id bigint,
-    legal_name text,
-    gender text,
-    date_of_birth date,
-    email_address text,
-    phone_number int,
-    emergency_contact int,
-    join_date date,
-    image_url text,
-    host boolean,
-    user_address text,
-    PRIMARY KEY (id),
+CREATE TABLE reviews.users (
+ user_id bigint,
+ first_name text,
+ last_name text,
+ email text,
+ join_date text,
+ image_url text,
+ city text,
+ state text,
+ PRIMARY KEY (user_id)
 );
 
-DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS reviews.rating;
 
-CREATE TABLE reviews(
-    reviews_id bigint,
-    user_id bigint,
-    post_date date,
-    host_response_date date,
-    host_response text,
-    check_in_rating decimal,
-    accuracy_rating decimal,
-    value_rating decimal,
-    communication_rating decimal,
-    location_rating decimal,
-    clean_rating decimal,
-    PRIMARY KEY (reviews_id, user_id),
+CREATE TABLE reviews.rating (
+ rating_id bigint,
+ rating_avg decimal,
+ checking_avg decimal,
+ accuracy_avg decimal,
+ value_avg decimal,
+ communication_avg decimal,
+ location_avg decimal,
+ cleanliness_avg decimal,
+ PRIMARY KEY (rating_id)
 );
 
-DROP TABLE IF EXISTS locations;
+DROP TABLE IF EXISTS reviews.locations;
 
-CREATE TABLE locations(
-    loc_id bigint,
-    user_id bigint,
-    rating_id bigint,
-    title text,
-    address text,
-    PRIMARY KEY (loc_id, user_id, rating_id),
+CREATE TABLE reviews.locations (
+ locations_id bigint,
+ title text,
+ loc_address text,
+ user_id int,
+ rating_id int,
+ PRIMARY KEY (locations_id, user_id, rating_id)
 );
 
-CREATE TABLE rating(
-    rating_id bigint,
-    rating_avg decimal,
-    checking_avg decimal,
-    accuracy_avg decimal,
-    value_avg decimal,
-    communication_avg decimal,
-    location_avg decimal,
-    cleanliness_avg decimal,
-)
+DROP TABLE IF EXISTS reviews.rev;
+
+CREATE TABLE reviews.rev (
+ reviews_id bigint,
+ review_date text,
+ review_text text,
+ user_id int,
+ locations_id int,
+ PRIMARY KEY (reviews_id, user_id, locations_id)
+);
