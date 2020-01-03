@@ -1,54 +1,51 @@
-DROP DATABASE IF EXISTS airreviews;
+DROP DATABASE IF EXISTS reviews;
 
-CREATE DATABASE airreviews
+CREATE DATABASE reviews;
 
-\c "airreviews";
+\c "reviews";
 
-CREATE TABLE user_info(
-    id SERIAL PRIMARY KEY,
-    legal_name character NOT NULL,
-    gender character,
-    date_of_birth date,
-    email_address date NOT NULL,
-    phone_number character NOT NULL,
-    emergency_contact integer,
-    join_date date NOT NULL,
-    image_url character,
-    host boolean NOT NUll,
-    user_address character
+DROP TABLE IF EXISTS users, reviews, locations, rating;
+
+CREATE TABLE users
+(
+ id SERIAL PRIMARY KEY,
+ first_name VARCHAR(20) NOT NULL,
+ last_name VARCHAR(30),
+ email VARCHAR(40) NOT NULL,
+ join_date TEXT NOT NULL,
+ image_url  VARCHAR(100),
+ city VARCHAR(30) NOT NULL,
+ "state" VARCHAR(30)
 );
 
-CREATE TABLE reviews(
-    reviews_id INTEGER NOT NULL,
-    user_id INTEGER REFERENCES user_info(id),
-    post_date date NOT NULL,
-    host_response_date date,
-    host_response character,
-    check_in_rating real,
-    accuracy_rating real,
-    value_rating real,
-    communication_rating real,
-    location_rating real,
-    clean_rating real,
-    PRIMARY KEY (reviews_id, user_id)
+CREATE TABLE rating
+(
+ id SERIAL PRIMARY KEY,
+ rating_avg REAL DEFAULT 0.0,
+ checking_avg REAL DEFAULT 0.0,
+ accuracy_avg REAL DEFAULT 0.0,
+ value_avg REAL DEFAULT 0.0,
+ communication_avg REAL DEFAULT 0.0,
+ location_avg REAL DEFAULT 0.0,
+ cleanliness_avg REAL DEFAULT 0.0
 );
 
-CREATE TABLE locations(
-    loc_id INTEGER NOT NULL,
-    user_id INTEGER REFERENCES user_info(id),
-    rating_id INTEGER REFERENCES rating(rating_id),
-    title character,
-    loc_address character,
-    PRIMARY KEY (loc_id, user_id, rating_id),
+CREATE TABLE locations 
+(
+ id SERIAL PRIMARY KEY,
+ title VARCHAR(40) NOT NULL,
+ loc_address VARCHAR(80) NOT NULL,
+ users_id INTEGER REFERENCES users(id),
+ rating_id INTEGER REFERENCES rating(id)
 );
 
-CREATE TABLE rating(
-    rating_id SERIAL PRIMARY KEY,
-    rating_avg real,
-    checking_avg real,
-    accuracy_avg real,
-    value_avg real,
-    communication_avg real,
-    location_avg real,
-    cleanliness_avg real,
+CREATE TABLE reviews
+(
+ id SERIAL PRIMARY KEY,
+ review_date TEXT NOT NULL,
+ review_text TEXT NOT NULL,
+ users_id INTEGER REFERENCES users(id),
+ locations_id INTEGER REFERENCES locations(id)
 );
+
+

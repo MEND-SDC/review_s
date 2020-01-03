@@ -11,6 +11,4 @@ const pool = new Pool({
 
 pool.connect();
 
-module.exports.Model = {
-
-};
+module.exports = pool;
