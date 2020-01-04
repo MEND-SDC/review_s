@@ -1,0 +1,1 @@
+COPY reviews.users (user_id,first_name,last_name,email,join_date,image_url,city,state) FROM '/Users/DNM/Programs/JS/SDC/airbnb-reviews/database/cassandra/reviews.users.csv' WITH DELIMITER=',' AND HEADER=TRUE;
