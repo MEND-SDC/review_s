@@ -1,1 +1,0 @@
-COPY reviews.rating (rating_id,rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg) FROM '/Users/DNM/Programs/JS/SDC/airbnb-reviews/database/cassandra/reviews.rating.csv' WITH DELIMITER=',' AND HEADER=TRUE;

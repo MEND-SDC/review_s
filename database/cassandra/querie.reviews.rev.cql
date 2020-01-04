@@ -1,1 +1,0 @@
-COPY reviews.rev (reviews_id,review_date,review_text,user_id,locations_id) FROM '/Users/DNM/Programs/JS/SDC/airbnb-reviews/database/cassandra/reviews.rev.csv' WITH DELIMITER=',' AND HEADER=TRUE;

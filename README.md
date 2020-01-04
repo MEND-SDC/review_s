@@ -49,6 +49,14 @@
   # Schema
   ![Schema](https://hrsf124-fec.s3-us-west-1.amazonaws.com/SDC/schemaSDC.png)
 
-* Cassandra Seeding Scpirt
-- cd /your/path
-- cqlsh -e "SOURCE 'schema.cql'"
+# Seeding
+ #### Cassandra Seeding
+  #### Importing File
+  - cd /your/path
+  - ``` cqlsh -e "SOURCE 'schema.cql'" ```
+
+ #### Postgres Seeding
+  #### Importing File
+  - cd /your/path
+  - psql -h hostname -d databasename -U username -f {SQL script file name}
+    - example: ``` psql -d postgres -f schema.sql ```

@@ -33,14 +33,13 @@ const seedPostgres = async () => {
     }).catch((err) => {
       console.error(err);
     });
-
-
-  // await copyFrom(tableName);
-  // Promise.all(promises).then(() => {
-  //   log(`This query took ${new Date() - start} milliseconds`);
-  // }).catch((error) => {
-  //   log('Promise.all error', error.stack);
-  // });
+    
+  await copyFrom(tableName);
+  Promise.all(promises).then(() => {
+    log(`This query took ${new Date() - start} milliseconds`);
+  }).catch((error) => {
+    log('Promise.all error', error.stack);
+  });
 };
 
 seedPostgres().catch(log);

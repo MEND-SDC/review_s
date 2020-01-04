@@ -1,10 +1,7 @@
 const {Pool} = require('pg');
-const faker = require('faker');
-const fs = require('fs').promises;
 const path = require('path');
+const { csvCreateTable, rmTable } = require('./generateDate.js');
 
-const recordNum = 10;
-const recordNumAThird = Math.floor(recordNum / 3);
 const pool = new Pool({ database: 'reviews' });
 
 pool.on('error', (err) => {
@@ -12,85 +9,6 @@ pool.on('error', (err) => {
     console.log(`Error: idle client: ${err}`);
   }
 });
-
-const randomRating = (min, max, precision) => Number.parseFloat(Math.random() * (max - min) + min).toPrecision(precision);
-
-const rating = (count) => {
-  var rates = '';
-  const min = 2.98;
-  const max = 5;
-  const precision = 3;
-  for (let i = 1; i <= count; i++) {
-    rates += `${randomRating(min, max, precision)},`;
-    rates += `${randomRating(min, max, precision)},`;
-    rates += `${randomRating(min, max, precision)},`;
-    rates += `${randomRating(min, max, precision)},`;
-    rates += `${randomRating(min, max, precision)},`;
-    rates += `${randomRating(min, max, precision)},`;
-    rates += `${randomRating(min, max, precision)}`;
-    rates += '\n';
-  }
-  return rates;
-};
-
-const reviews = (count) => {
-  var review = '';
-  for (let userId = 1; userId <= count; userId++) {
-    const reviewCount = Math.floor(randomRating(4, 9));
-    for (let j = 0; j <= reviewCount; j++) {
-      review += `${faker.date.recent()},`; // date
-      review += `${faker.lorem.sentence()},`; // review
-      review += `${userId},`; // user_id
-      review += `${Math.floor(randomRating(1, recordNumAThird + 1))}`; // location_id
-      review += '\n';
-    }
-  }
-  return review;
-};
-
-const locations = (count) => {
-  var location = '';
-  const min = 1;
-  for (let i = 1; i <= count; i++) {
-    location += `${faker.lorem.words()},`; // title
-    location += `${faker.address.streetAddress()},`; // address
-    location += `${Math.floor(randomRating(min, recordNum))},`; // user_id
-    location += `${i}`; // rating_id
-    location += '\n';
-  }
-  return location;
-};
-
-const userInfo = (count) => {
-  var user = '';
-  for (let i = 0; i < count; i++) {
-    user += `${faker.name.firstName()},`; // first_name
-    user += `${faker.name.lastName()},`; // last_name
-    user += `${faker.internet.email()},`; // email
-    user += `${faker.date.recent()},`; // join_date
-    user += `${faker.image.avatar()},`; // image_url
-    user += `${faker.address.city()},`; // city
-    user += `${faker.address.state()}`; // state
-    user += '\n';
-  }
-  return user;
-};
-
-const csvCreateTable = async (creatTableInfo, tableName) => {
-  fs.writeFile(path.resolve(`${tableName}.csv`), creatTableInfo(recordNum)).then(() => {
-    console.log(`Success: ${tableName}.csv`);
-  }).catch((err) => {
-    console.log(`Error: ${err}`);
-  });
-};
-
-const rmTable = async (tableName) => {
-  fs.unlink(path.resolve(`${tableName}.csv`), (err) => {
-    if (err) {
-      console.error('Error: ', err);
-    }
-  });
-};
 
 const addQuery = async (tableName, rows) => (
   pool.connect()
@@ -107,27 +25,23 @@ const addQuery = async (tableName, rows) => (
 const seedPostgres = async () => {
   const start = new Date();
   const promises = [];
-  const tableNames = {users: 'users', rating: 'rating', locations: 'locations', reviews: 'reviews'};
+  const tableNames = ['users', 'rating', 'locations', 'reviews'];
+  const columns = [
+    'first_name,last_name,email,join_date,image_url,city,state',
+    'rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg',
+    'title,loc_address,users_id,rating_id',
+    'review_date,review_text,users_id,locations_id',
+  ];
 
-  await csvCreateTable(userInfo, tableNames.users);
-  await csvCreateTable(rating, tableNames.rating);
-  await csvCreateTable(locations, tableNames.locations);
-  await csvCreateTable(reviews, tableNames.reviews);
+  await csvCreateTable(tableNames);
 
-  promises.push(await addQuery(tableNames.users, 'first_name,last_name,email,join_date,image_url,city,state'));
-  promises.push(await addQuery(tableNames.rating, 'rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg'));
-  promises.push(await addQuery(tableNames.locations, 'title,loc_address,users_id,rating_id'));
-  promises.push(await addQuery(tableNames.reviews, 'review_date,review_text,users_id,locations_id'));
-  
-  await rmTable(tableNames.users);
-  await rmTable(tableNames.rating);
-  await rmTable(tableNames.locations);
-  await rmTable(tableNames.reviews);
-
-  Promise.all(promises).then(() => {
-    console.log(`This query took ${new Date() - start} milliseconds`);
-  }).catch((error) => {
-    console.error('Promise.all error', error.stack);
+  tableNames.forEach(async (table, key) => {
+    promises.push(await addQuery(table, columns[key])
+      .then(() => {
+        rmTable(table);
+      }).catch((err) => {
+        console.error(err);
+      }));
   });
 };
 
