@@ -27,6 +27,7 @@ class App extends React.Component {
 
     this.state = {
       listing: {},
+      rating: {},
       reviews: [],
       renderedReviews: [],
       serchedTerm: '',
@@ -62,14 +63,16 @@ class App extends React.Component {
         const reviewsLength = results.data.reviews.length;
         const totalPage = Math.ceil(reviewsLength / 7);
         const max = totalPage * 7;
-        let showNext;
+        var showNext = false;
+
         if (reviewsLength <= 7) {
           showNext = false;
         } else {
           showNext = true;
         }
         this.setState({
-          listing: results.data.stats[0],
+          listing: results.data.location,
+          rating: results.data.location.rating_id,
           reviews: results.data.reviews,
           renderedReviews: results.data.reviews.slice(0, 7),
           max,
@@ -87,6 +90,7 @@ class App extends React.Component {
 
   filterBySearchedTerm() {
     const { reviews, searchedTerm, renderedReviews } = this.state;
+
     if (searchedTerm) {
       const searchedReviewsArr = [];
       for (let i = 0; i < reviews.length; i += 1) {
@@ -142,16 +146,16 @@ class App extends React.Component {
   }
 
   render() {
-    const { listing, showBack, showNext } = this.state;
+    const { listing, rating, showBack, showNext, reviews } = this.state;
     return (
       <div>
-        <Stats listing={listing} />
+        <Stats reviews={reviews.length} rating={rating} />
         <Search handleSearch={this.handleSearch} />
         <Reviews reviews={this.filterBySearchedTerm()} />
-        <Center>
+        {/* <Center>
           {showBack ? <StyledButton type="button" style={{ width: '30px', height: '30px' }} onClick={this.pervPage}><TiArrowBack /></StyledButton> : null}
           {showNext ? <StyledButton type="button" style={{ width: '30px', height: '30px' }} onClick={this.nextPage}><TiArrowForward /></StyledButton> : null}
-        </Center>
+        </Center> */}
       </div>
     );
   }
