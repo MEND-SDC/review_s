@@ -1,16 +1,10 @@
 node_modules
 
-coverage
-
-/eslint.js
-
 config
 
-docker
+newrelic.js
 
 csvFiles
 
-# newrelic instance private information
-newrelic.js
 newrelic_agent.log
 
