@@ -4,12 +4,13 @@ coverage
 
 /eslint.js
 
-/faker.text
-
 config
-
-/docker-compose.yml
 
 docker
 
 csvFiles
+
+# newrelic instance private information
+newrelic.js
+newrelic_agent.log
+

@@ -1,6 +1,6 @@
-const {Pool} = require('pg');
+const { Pool } = require('pg');
 const path = require('path');
-const { csvCreateTable, rmTable } = require('./generateDate.js');
+// const fs = require('fs').promises;
 
 const pool = new Pool({ database: 'reviews' });
 
@@ -12,7 +12,7 @@ pool.on('error', (err) => {
 
 const addQuery = async (tableName, rows) => (
   pool.connect()
-    .then((client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.resolve(`${tableName}.csv`)}' DELIMITER ',';`)
+    .then((client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.join(__dirname, `csvFiles/${tableName}.csv`)}' DELIMITER ',';`)
       .then((res) => {
         client.release();
         console.log(`Success: SEEDED ${tableName}`);
@@ -30,25 +30,18 @@ const seedPostgres = async () => {
     'title,loc_address,users_id,rating_id',
     'review_date,review_text,users_id,locations_id',
   ];
-  
-  await csvCreateTable(tableNames)
+
+  await addQuery(tableNames[0], columns[0])
     .then(async () => {
-      await addQuery(tableNames[0], columns[0]); // user
+      await addQuery(tableNames[1], columns[1]); // user
     })
     .then(async () => {
-      await addQuery(tableNames[1], columns[1]); // rating
+      await addQuery(tableNames[2], columns[2]); // rating
     })
     .then(async () => {
-      await addQuery(tableNames[2], columns[2]); // locations
+      await addQuery(tableNames[3], columns[3]); // locations
     })
-    .then(async () => {
-      addQuery(tableNames[3], columns[3]); // reviews
-    })
-    .then(() => {
-      tableNames.forEach((fileName) => {
-        rmTable(fileName);
-      });
-    }).catch((err) => console.error(err));
+    .catch((err) => console.error(err));
 };
 
 seedPostgres();
