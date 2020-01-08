@@ -3,7 +3,7 @@ const log = require('fancy-log');
 const fs = require('fs').promises;
 const path = require('path');
 
-const recordNum = 10;
+const recordNum = 1000000;
 const recordNumAThird = Math.floor(recordNum / 3);
 
 const randomRating = (min, max, precision) => Number.parseFloat(Math.random() * (max - min) + min).toPrecision(precision);
@@ -77,7 +77,6 @@ const userInfo = (count) => {
 
 exports.csvCreateTable = async (tableNames) => {
   const fooNames = [userInfo, rating, locations, reviews];
-
   tableNames.forEach((tableName, key) => {
     fs.writeFile(path.resolve(`${tableName}.csv`), fooNames[key](recordNum)).then(() => {
       log(`Success: ${tableName}.csv`);
@@ -85,6 +84,12 @@ exports.csvCreateTable = async (tableNames) => {
       log(`Error: ${err}`);
     });
   });
+
+  // fs.writeFile(path.resolve(`${tableNames}.csv`), locations(recordNum)).then(() => {
+  //   log(`Success: ${tableNames}.csv`);
+  // }).catch((err) => {
+  //   log(`Error: ${err}`);
+  // });
 };
 
 exports.rmCsv = async (tableNames) => {

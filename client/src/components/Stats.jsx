@@ -70,13 +70,7 @@ const InnerContainer = styled.div`
   color: #484848; 
 `;
 
-const Stats = ({
-  listing: {
-    avg_rating, communication, cleanliness,
-    hospitality, stylish, sparkling_clean, quick_responses,
-    amazing_amenities, counts, check_in, accuracy, value, location,
-  },
-}) => (
+const Stats = (props) => (
   <WrappReviews>
     <Reviews>Reviews</Reviews>
     <IconContext.Provider value={{ color: '#008489' }}>
@@ -84,7 +78,7 @@ const Stats = ({
         <div>
           <IoMdStar />
           <NumFont>
-            {avg_rating}
+            {props.rating.rating_avg}
           </NumFont>
         </div>
         <HorBarColor>
@@ -92,7 +86,7 @@ const Stats = ({
         </HorBarColor>
         <div>
           <NumFont>
-            {counts}
+            {props.reviews}
             &nbsp;
           </NumFont>
             Reviews
@@ -107,7 +101,7 @@ const Stats = ({
           &nbsp;
           &nbsp;
           <NumFont>
-            {check_in}
+            {props.rating.checking_avg}
           </NumFont>
         </div>
         <div>Accuracy </div>
@@ -116,7 +110,7 @@ const Stats = ({
           &nbsp;
           &nbsp;
           <NumFont>
-            {accuracy}
+            {props.rating.accuracy_avg}
           </NumFont>
         </div>
         <div>Communication </div>
@@ -125,7 +119,7 @@ const Stats = ({
           &nbsp;
           &nbsp;
           <NumFont>
-            {communication}
+            {props.rating.communication_avg}
           </NumFont>
         </div>
         <div>Cleanliness </div>
@@ -134,7 +128,7 @@ const Stats = ({
           &nbsp;
           &nbsp;
           <NumFont>
-            {cleanliness}
+            {props.rating.cleanliness_avg}
           </NumFont>
         </div>
         <div>Location </div>
@@ -143,7 +137,7 @@ const Stats = ({
           &nbsp;
           &nbsp;
           <NumFont>
-            {location}
+            {props.rating.location_avg}
           </NumFont>
         </div>
         <div>Value </div>
@@ -152,7 +146,7 @@ const Stats = ({
           &nbsp;
           &nbsp;
           <NumFont>
-            {value}
+            {props.rating.value_avg}
           </NumFont>
         </div>
       </InnerContainer>
@@ -162,35 +156,35 @@ const Stats = ({
         <div>
             🛋
           <NumFont>
-            {stylish}
+            {Math.floor(Math.random() * Math.floor(302))}
           </NumFont>
         </div>
         <div>Quick responses </div>
         <div>
            💬
           <NumFont>
-            {quick_responses}
+            {Math.floor(Math.random() * Math.floor(302))}
           </NumFont>
         </div>
         <div>Sparkling clean </div>
         <div>
           🛁
           <NumFont>
-            {sparkling_clean}
+            {Math.floor(Math.random() * Math.floor(302))}
           </NumFont>
         </div>
         <div>Amazing amenities </div>
         <div>
           ☕️
           <NumFont>
-            {amazing_amenities}
+            {Math.floor(Math.random() * Math.floor(302))}
           </NumFont>
         </div>
         <div>Outstanding hospitality</div>
         <div>
           ♥️
           <NumFont>
-            {hospitality}
+            {Math.floor(Math.random() * Math.floor(302))}
           </NumFont>
         </div>
       </InnerContainer>

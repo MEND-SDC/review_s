@@ -1,12 +1,12 @@
-/* eslint-disable import/no-extraneous-dependencies */
+const newrelic = require('newrelic');
+
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const { getListing } = require('./controllers/reviews.js');
 
 const app = express();
-const path = require('path');
-
 const port = 3000;
-const Controllers = require('./controllers.js');
 
 app.use(cors());
 
@@ -14,12 +14,6 @@ app.use('/', express.static(path.join(__dirname, '../client/dist')));
 
 app.use('/listing/:id', express.static(path.join(__dirname, '../client/dist')));
 
-app.get('/', (req, res) => {
-  res.send('hello from server');
-});
-
-app.get('/api/listing/:id', (req, res) => {
-  Controllers.getListing(req.params, res);
-});
+app.get('/api/listing/:id', getListing);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

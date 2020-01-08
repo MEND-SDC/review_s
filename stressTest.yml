@@ -1,0 +1,12 @@
+  
+config:
+  target: 'http://localhost:3000'
+  http:
+    pool: 10
+  phases:
+    - arrivalRate: 2000
+      duration: 30
+scenarios:
+  - flow:
+    - post:
+        url: "/api/listing/100000"

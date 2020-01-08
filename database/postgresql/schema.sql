@@ -11,11 +11,11 @@ CREATE TABLE users
  id SERIAL PRIMARY KEY,
  first_name VARCHAR(20) NOT NULL,
  last_name VARCHAR(30),
- email VARCHAR(40) NOT NULL,
+ email VARCHAR(60) NOT NULL,
  join_date TEXT NOT NULL,
- image_url  VARCHAR(100),
- city VARCHAR(30) NOT NULL,
- "state" VARCHAR(30)
+ city VARCHAR(100) NOT NULL,
+ state VARCHAR(100) NOT NULL,
+ image_url  VARCHAR(100)
 );
 
 CREATE TABLE rating
@@ -33,7 +33,7 @@ CREATE TABLE rating
 CREATE TABLE locations 
 (
  id SERIAL PRIMARY KEY,
- title VARCHAR(40) NOT NULL,
+ title VARCHAR(60) NOT NULL,
  loc_address VARCHAR(80) NOT NULL,
  users_id INTEGER REFERENCES users(id),
  rating_id INTEGER REFERENCES rating(id)

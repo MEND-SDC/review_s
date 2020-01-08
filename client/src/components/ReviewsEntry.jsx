@@ -75,18 +75,7 @@ const OwnersResFont = styled.div`
 `;
 
 
-const ReviewsEntry = ({
-  review: {
-    name,
-    image,
-    date,
-    review,
-    ownersName,
-    ownersImage,
-    ownersResponseDate,
-    response,
-  },
-}) => (
+const ReviewsEntry = (props) => (
   <Wrapper>
     <dl>
       <User>
@@ -101,7 +90,7 @@ const ReviewsEntry = ({
           </div>
           <div>
             <DateFont>
-              {moment(date).format('MMMM YYYY')}
+              {moment(props.review.review_date).format('MMMM YYYY')}
             </DateFont>
           </div>
         </NameDate>
@@ -114,7 +103,7 @@ const ReviewsEntry = ({
               more="Read more"
               expanded={false}
             >
-              {review}
+              {props.review.review_text}
             </ShowMoreText>
           </div>
         </ReviewFont>

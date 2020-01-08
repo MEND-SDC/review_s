@@ -6,6 +6,7 @@ import ReviewsEntry from './ReviewsEntry.jsx';
 const Reviews = ({ reviews }) => (
   <ul className="reviews">
     {reviews.map((review, idx) => {
+      console.log(review);
       return <ReviewsEntry key={idx} review={review} />;
     })}
   </ul>

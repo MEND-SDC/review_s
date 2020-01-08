@@ -12,7 +12,7 @@ pool.on('error', (err) => {
 
 const addQuery = async (tableName, rows) => (
   pool.connect()
-    .then(async (client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.resolve(`${tableName}.csv`)}' DELIMITER ',';`)
+    .then((client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.resolve(`${tableName}.csv`)}' DELIMITER ',';`)
       .then((res) => {
         client.release();
         console.log(`Success: SEEDED ${tableName}`);
@@ -23,26 +23,32 @@ const addQuery = async (tableName, rows) => (
 );
 
 const seedPostgres = async () => {
-  const start = new Date();
-  const promises = [];
   const tableNames = ['users', 'rating', 'locations', 'reviews'];
   const columns = [
-    'first_name,last_name,email,join_date,image_url,city,state',
+    'first_name,last_name,email,join_date,city,state,image_url',
     'rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg',
     'title,loc_address,users_id,rating_id',
     'review_date,review_text,users_id,locations_id',
   ];
-
-  await csvCreateTable(tableNames);
-
-  tableNames.forEach(async (table, key) => {
-    promises.push(await addQuery(table, columns[key])
-      .then(() => {
-        rmTable(table);
-      }).catch((err) => {
-        console.error(err);
-      }));
-  });
+  
+  await csvCreateTable(tableNames)
+    .then(async () => {
+      await addQuery(tableNames[0], columns[0]); // user
+    })
+    .then(async () => {
+      await addQuery(tableNames[1], columns[1]); // rating
+    })
+    .then(async () => {
+      await addQuery(tableNames[2], columns[2]); // locations
+    })
+    .then(async () => {
+      addQuery(tableNames[3], columns[3]); // reviews
+    })
+    .then(() => {
+      tableNames.forEach((fileName) => {
+        rmTable(fileName);
+      });
+    }).catch((err) => console.error(err));
 };
 
 seedPostgres();
