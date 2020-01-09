@@ -13,7 +13,7 @@ pool.on('error', (err) => {
 const addQuery = async (tableName, rows) => (
   pool.connect()
     .then((client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.join(__dirname, `/csv/${tableName}.csv`)}' DELIMITER ',';`)
-      .then((res) => {
+      .then(() => {
         client.release();
         log(`Success: SEEDED ${tableName}`);
       }).catch((err) => {

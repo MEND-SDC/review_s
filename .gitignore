@@ -4,6 +4,8 @@ config
 
 newrelic.js
 
-csvFiles
+cassandra
+
+mysql
 
 newrelic_agent.log
