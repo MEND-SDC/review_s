@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
 const path = require('path');
-// const fs = require('fs').promises;
+const log = require('fancy-log');
 
 const pool = new Pool({ database: 'reviews' });
 
@@ -12,13 +12,13 @@ pool.on('error', (err) => {
 
 const addQuery = async (tableName, rows) => (
   pool.connect()
-    .then((client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.join(__dirname, `csvFiles/${tableName}.csv`)}' DELIMITER ',';`)
+    .then((client) => client.query(`COPY ${tableName}(${rows}) FROM '${path.join(__dirname, `/csv/${tableName}.csv`)}' DELIMITER ',';`)
       .then((res) => {
         client.release();
-        console.log(`Success: SEEDED ${tableName}`);
+        log(`Success: SEEDED ${tableName}`);
       }).catch((err) => {
         client.release();
-        console.log(err.stack);
+        log(err.stack);
       }))
 );
 
@@ -28,20 +28,20 @@ const seedPostgres = async () => {
     'first_name,last_name,email,join_date,city,state,image_url',
     'rating_avg,checking_avg,accuracy_avg,value_avg,communication_avg,location_avg,cleanliness_avg',
     'title,loc_address,users_id,rating_id',
-    'review_date,review_text,users_id,locations_id',
+    'first_name,review_date,review_text,users_id,locations_id,image_url',
   ];
 
-  await addQuery(tableNames[0], columns[0])
+  await addQuery(tableNames[0], columns[0]) // users
     .then(async () => {
-      await addQuery(tableNames[1], columns[1]); // user
+      await addQuery(tableNames[1], columns[1]); // rating
     })
     .then(async () => {
-      await addQuery(tableNames[2], columns[2]); // rating
+      await addQuery(tableNames[2], columns[2]); // loctions
     })
     .then(async () => {
-      await addQuery(tableNames[3], columns[3]); // locations
+      await addQuery(tableNames[3], columns[3]); // reviews
     })
-    .catch((err) => console.error(err));
+    .catch((err) => log(err));
 };
 
 seedPostgres();

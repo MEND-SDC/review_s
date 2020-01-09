@@ -42,10 +42,12 @@ CREATE TABLE locations
 CREATE TABLE reviews
 (
  id SERIAL PRIMARY KEY,
+ first_name VARCHAR(20) NOT NULL, 
  review_date TEXT NOT NULL,
  review_text TEXT NOT NULL,
  users_id INTEGER REFERENCES users(id),
- locations_id INTEGER REFERENCES locations(id)
+ locations_id INTEGER REFERENCES locations(id),
+ image_url  VARCHAR(100)
 );
 
 
