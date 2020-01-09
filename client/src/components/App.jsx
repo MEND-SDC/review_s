@@ -8,7 +8,7 @@ import Stats from './Stats.jsx';
 import Reviews from './Reviews.jsx';
 import Search from './Search.jsx';
 
-const host = 'localhost:3000';
+const host = 'localhost:3003';
 
 const StyledButton = styled.button`
   border-radius: 50%;

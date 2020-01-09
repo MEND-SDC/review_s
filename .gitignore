@@ -1,15 +1,11 @@
 node_modules
 
-coverage
-
-/eslint.js
-
-/faker.text
-
 config
 
-/docker-compose.yml
+newrelic.js
 
-docker
+cassandra
 
-csvFiles
+mysql
+
+newrelic_agent.log
