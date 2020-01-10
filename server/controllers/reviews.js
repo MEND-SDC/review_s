@@ -48,7 +48,7 @@ const reviews = ({ id }, cb) => {
   });
 };
 
-exports.getListing = async (req, res) => {
+exports.getData = async (req, res) => {
   const id = req.params;
 
   locations(id, (err, locationData) => {
@@ -71,4 +71,16 @@ exports.getListing = async (req, res) => {
       });
     }
   });
+};
+
+exports.writeData = (req, res) => {
+
+};
+
+exports.updateData = (req, res) => {
+
+};
+
+exports.deleteData = (req, res) => {
+
 };

@@ -1,7 +1,7 @@
 const Models = require('./models.js');
 
 module.exports = {
-  getListing: (id, res) => {
+  getData: (id, res) => {
     Models.getListing((err, data) => {
       if (err) {
         res.status(400).send(err);
