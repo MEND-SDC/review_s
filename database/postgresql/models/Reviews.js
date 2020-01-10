@@ -1,6 +1,4 @@
-const { Pool } = require('pg');
-
-const pool = new Pool({ database: 'reviews' });
+const pool = require('../index.js');
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
