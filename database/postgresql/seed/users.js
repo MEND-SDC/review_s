@@ -3,7 +3,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const log = require('fancy-log');
 
-const recordNum = 5000000;
+const recordNum = 1000000;
 
 const users = () => {
   var user = '';

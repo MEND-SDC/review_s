@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs').promises;
 const log = require('fancy-log');
 
-const recordNum = 1000000;
+const recordNum = 500000;
 
 const randomRating = (min, max, precision) => Number.parseFloat(Math.random() * (max - min) + min).toPrecision(precision);
 
